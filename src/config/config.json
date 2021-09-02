@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "gaurav@18",
-    "database": "database_development",
+    "database": "foodapp_development",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
