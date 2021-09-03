@@ -15,7 +15,7 @@ let corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 // calling sync() method
 db.sequelize.sync();
