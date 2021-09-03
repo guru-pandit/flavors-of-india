@@ -9,14 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      // define association here
+    static associate({ Restaurant }) {
+      Mealtype.belongsToMany(Restaurant, {
+        through: "RestaurantMealtype",
+      });
     }
   };
   Mealtype.init({
     name: DataTypes.STRING,
     content: DataTypes.STRING,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    isDeleted: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Mealtype',
