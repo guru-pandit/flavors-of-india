@@ -2,7 +2,6 @@
 const menuitemController = require("../controllers").menuitem;
 
 module.exports = (app) => {
-  let router = require("express").Router();
-
-  app.use("/api", router);
+  // Get all menu items with their restaurant
+  app.get("/menuitems", menuitemController.getAllMenuitems);
 };
