@@ -2,9 +2,8 @@
 const restaurantController = require("../controllers").restaurant;
 
 module.exports = (app) => {
-  let router = require("express").Router();
-
-  
-
-  app.use("/api", router);
+    //to get restaurants by location
+    app.get("/getrestaurantsbylocation/:locationId", restaurantController.getRestaurantsByLocation);
+    //to get restaurant details by its id
+    app.get("/getrestaurantdetailsbyid/:restaurantId", restaurantController.getRestaurantDetailsById);
 };
