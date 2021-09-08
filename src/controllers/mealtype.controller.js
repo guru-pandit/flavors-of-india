@@ -1,16 +1,14 @@
-const Menuitem = require("../models").Menuitem;
+const Mealtype = require("../models").Mealtype;
 const Restaurant = require("../models").Restaurant;
 
-// This method create new menu item
-const createMenuitem = async (req, res) => {
+// This method create new meal type
+const createMealtype = async (req, res) => {
     try {
         let { restaurantId } = req.params;
-        let menu = {
+        let meal = {
             name: req.body.name,
-            description: req.body.description,
+            content: req.body.content,
             image: req.body.image,
-            quantity: req.body.quantity,
-            price: req.body.price,
             isDeleted: false
         };
 
@@ -19,20 +17,20 @@ const createMenuitem = async (req, res) => {
         if (restaurant == null) {
             return res.status(400).json({ error: "Restaurant not found" });
         } else {
-            let menuitem = await Menuitem.create(menu);
-            // addMenuitem method adds the ids of both restaurant and menuitem in the Junction table
-            restaurant.addMenuitem(menuitem);
-            return res.status(200).json({ message: "Menu item created", menuitem });
+            let mealtype = await Mealtype.create(meal);
+            // addMealtype method adds the ids of both restaurant and mealtype in the Junction table
+            restaurant.addMealtype(mealtype);
+            return res.status(200).json({ message: "Meal type created", mealtype });
         }
     } catch (err) {
         res.status(500).json({ error: err.message || "Something went wrong" });
     }
 }
 
-// This method return all Menu items with their retaurant
-const getAllMenuitems = async (req, res) => {
+// This method return all meal types with their retaurant
+const getAllMealtypes = async (req, res) => {
     try {
-        let menuitems = await Menuitem.findAll({
+        let mealtypes = await Mealtype.findAll({
             include: [
                 {
                     model: Restaurant,
@@ -40,21 +38,21 @@ const getAllMenuitems = async (req, res) => {
                 }
             ]
         });
-        res.status(200).json(menuitems);
+        res.status(200).json(mealtypes);
     } catch (err) {
         res.status(500).json({ error: err.message || "Something went wrong" });
     }
 }
 
-// This method returns all the menuitems of specific restaurant
-const getMenuitemsByRestaurant = async (req, res) => {
+// This method returns all the meal types of specific restaurant
+const getMealtypesByRestaurant = async (req, res) => {
     try {
         let { restaurantId } = req.params;
         let restaurant = await Restaurant.findOne({
             where: { id: restaurantId },
             include: [
                 {
-                    model: Menuitem,
+                    model: Mealtype,
                     through: { attributes: [] }
                 }
             ]
@@ -70,12 +68,12 @@ const getMenuitemsByRestaurant = async (req, res) => {
     }
 }
 
-// This method returns all the Restaurants of specific menuitem
-const getRestaurantsByMenuitem = async (req, res) => {
+// This method returns all the Restaurants of specific mealtype
+const getRestaurantsByMealtype = async (req, res) => {
     try {
-        let { menuitemId } = req.params;
-        let menuitem = await Menuitem.findOne({
-            where: { id: menuitemId },
+        let { mealtypeId } = req.params;
+        let mealtype = await Mealtype.findOne({
+            where: { id: mealtypeId },
             include: [
                 {
                     model: Restaurant,
@@ -84,14 +82,14 @@ const getRestaurantsByMenuitem = async (req, res) => {
             ]
         });
 
-        if (menuitem == null) {
-            return res.status(400).json({ error: "Menu item not found" });
+        if (mealtype == null) {
+            return res.status(400).json({ error: "Meal type not found" });
         } else {
-            return res.status(200).json(menuitem);
+            return res.status(200).json(mealtype);
         }
     } catch (err) {
         res.status(500).json({ error: err.message || "Something went wrong" });
     }
 }
 
-module.exports = { getAllMenuitems, createMenuitem, getMenuitemsByRestaurant, getRestaurantsByMenuitem }
+module.exports = { createMealtype, getAllMealtypes, getMealtypesByRestaurant, getRestaurantsByMealtype }
